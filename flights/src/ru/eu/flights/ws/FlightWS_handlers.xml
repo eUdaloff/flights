@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
+    <handler-chain>
+        <handler>
+            <handler-name>ru.eu.flights.ws.handlers.TestMessageHandler</handler-name>
+            <handler-class>ru.eu.flights.ws.handlers.TestMessageHandler</handler-class>
+        </handler>
+    </handler-chain>
+    <handler-chain>
+        <handler>
+            <handler-name>ru.eu.flights.ws.handlers.TestLogicalHandler</handler-name>
+            <handler-class>ru.eu.flights.ws.handlers.TestLogicalHandler</handler-class>
+        </handler>
+    </handler-chain>
+</handler-chains>
