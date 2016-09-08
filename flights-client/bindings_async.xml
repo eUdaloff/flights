@@ -1,0 +1,14 @@
+<bindings xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        wsdlLocation="http://tvrit10:8080/flights_war_exploded/FlightWebService?wsdl"
+        xmlns="http://java.sun.com/xml/ns/jaxws">
+	<enableAsyncMapping>true</enableAsyncMapping>
+	
+	<!--
+	<package name="ru.eu.flights.client.generated"/>
+    <bindings node="wsdl:definitions/wsdl:portType[@name='AddNumbersImpl']/wsdl:operation[@name='addNumbers']">
+	<enableAsyncMapping>true</enableAsyncMapping>
+    ...
+	</bindings>
+    ...
+	-->
+</bindings>	
