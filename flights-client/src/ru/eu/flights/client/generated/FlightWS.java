@@ -2,14 +2,17 @@
 package ru.eu.flights.client.generated;
 
 import java.util.List;
+import java.util.concurrent.Future;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.ws.Action;
+import javax.xml.ws.AsyncHandler;
 import javax.xml.ws.FaultAction;
 import javax.xml.ws.RequestWrapper;
+import javax.xml.ws.Response;
 import javax.xml.ws.ResponseWrapper;
 
 
@@ -28,6 +31,105 @@ public interface FlightWS {
 
     /**
      * 
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns javax.xml.ws.Response<ru.eu.flights.client.generated.BuyTicketResponse>
+     */
+    @WebMethod(operationName = "buyTicket")
+    @RequestWrapper(localName = "buyTicket", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.BuyTicket")
+    @ResponseWrapper(localName = "buyTicketResponse", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.BuyTicketResponse")
+    public Response<BuyTicketResponse> buyTicketAsync(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Passenger arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        Flight arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        Place arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3);
+
+    /**
+     * 
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @param asyncHandler
+     * @return
+     *     returns java.util.concurrent.Future<? extends java.lang.Object>
+     */
+    @WebMethod(operationName = "buyTicket")
+    @RequestWrapper(localName = "buyTicket", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.BuyTicket")
+    @ResponseWrapper(localName = "buyTicketResponse", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.BuyTicketResponse")
+    public Future<?> buyTicketAsync(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Passenger arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        Flight arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        Place arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3,
+        @WebParam(name = "asyncHandler", targetNamespace = "")
+        AsyncHandler<BuyTicketResponse> asyncHandler);
+
+    /**
+     * 
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     * @throws InvalidArgumentMN
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "buyTicket", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.BuyTicket")
+    @ResponseWrapper(localName = "buyTicketResponse", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.BuyTicketResponse")
+    @Action(input = "http://flights.eu.ru/ws/FlightWS/buyTicketRequest", output = "http://flights.eu.ru/ws/FlightWS/buyTicketResponse", fault = {
+        @FaultAction(className = InvalidArgumentMN.class, value = "http://flights.eu.ru/ws/FlightWS/buyTicket/Fault/ArgumentException")
+    })
+    public boolean buyTicket(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Passenger arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        Flight arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        Place arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        String arg3)
+        throws InvalidArgumentMN
+    ;
+
+    /**
+     * 
+     * @return
+     *     returns javax.xml.ws.Response<ru.eu.flights.client.generated.GetAllCitiesResponse>
+     */
+    @WebMethod(operationName = "getAllCities")
+    @RequestWrapper(localName = "getAllCities", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.GetAllCities")
+    @ResponseWrapper(localName = "getAllCitiesResponse", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.GetAllCitiesResponse")
+    public Response<GetAllCitiesResponse> getAllCitiesAsync();
+
+    /**
+     * 
+     * @param asyncHandler
+     * @return
+     *     returns java.util.concurrent.Future<? extends java.lang.Object>
+     */
+    @WebMethod(operationName = "getAllCities")
+    @RequestWrapper(localName = "getAllCities", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.GetAllCities")
+    @ResponseWrapper(localName = "getAllCitiesResponse", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.GetAllCitiesResponse")
+    public Future<?> getAllCitiesAsync(
+        @WebParam(name = "asyncHandler", targetNamespace = "")
+        AsyncHandler<GetAllCitiesResponse> asyncHandler);
+
+    /**
+     * 
      * @return
      *     returns java.util.List<ru.eu.flights.client.generated.City>
      */
@@ -37,6 +139,53 @@ public interface FlightWS {
     @ResponseWrapper(localName = "getAllCitiesResponse", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.GetAllCitiesResponse")
     @Action(input = "http://flights.eu.ru/ws/FlightWS/getAllCitiesRequest", output = "http://flights.eu.ru/ws/FlightWS/getAllCitiesResponse")
     public List<City> getAllCities();
+
+    /**
+     * 
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns javax.xml.ws.Response<ru.eu.flights.client.generated.SearchFlightsResponse>
+     */
+    @WebMethod(operationName = "searchFlights")
+    @RequestWrapper(localName = "searchFlights", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.SearchFlights")
+    @ResponseWrapper(localName = "searchFlightsResponse", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.SearchFlightsResponse")
+    public Response<SearchFlightsResponse> searchFlightsAsync(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Long arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        City arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        City arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        Integer arg3);
+
+    /**
+     * 
+     * @param arg3
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @param asyncHandler
+     * @return
+     *     returns java.util.concurrent.Future<? extends java.lang.Object>
+     */
+    @WebMethod(operationName = "searchFlights")
+    @RequestWrapper(localName = "searchFlights", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.SearchFlights")
+    @ResponseWrapper(localName = "searchFlightsResponse", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.SearchFlightsResponse")
+    public Future<?> searchFlightsAsync(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Long arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        City arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        City arg2,
+        @WebParam(name = "arg3", targetNamespace = "")
+        Integer arg3,
+        @WebParam(name = "asyncHandler", targetNamespace = "")
+        AsyncHandler<SearchFlightsResponse> asyncHandler);
 
     /**
      * 
@@ -69,32 +218,32 @@ public interface FlightWS {
 
     /**
      * 
-     * @param arg3
-     * @param arg2
-     * @param arg1
      * @param arg0
      * @return
-     *     returns boolean
-     * @throws InvalidArgumentMN
+     *     returns javax.xml.ws.Response<ru.eu.flights.client.generated.CheckReservationByCodeResponse>
      */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "buyTicket", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.BuyTicket")
-    @ResponseWrapper(localName = "buyTicketResponse", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.BuyTicketResponse")
-    @Action(input = "http://flights.eu.ru/ws/FlightWS/buyTicketRequest", output = "http://flights.eu.ru/ws/FlightWS/buyTicketResponse", fault = {
-        @FaultAction(className = InvalidArgumentMN.class, value = "http://flights.eu.ru/ws/FlightWS/buyTicket/Fault/ArgumentException")
-    })
-    public boolean buyTicket(
+    @WebMethod(operationName = "checkReservationByCode")
+    @RequestWrapper(localName = "checkReservationByCode", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.CheckReservationByCode")
+    @ResponseWrapper(localName = "checkReservationByCodeResponse", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.CheckReservationByCodeResponse")
+    public Response<CheckReservationByCodeResponse> checkReservationByCodeAsync(
         @WebParam(name = "arg0", targetNamespace = "")
-        Passenger arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        Flight arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        Place arg2,
-        @WebParam(name = "arg3", targetNamespace = "")
-        String arg3)
-        throws InvalidArgumentMN
-    ;
+        String arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @param asyncHandler
+     * @return
+     *     returns java.util.concurrent.Future<? extends java.lang.Object>
+     */
+    @WebMethod(operationName = "checkReservationByCode")
+    @RequestWrapper(localName = "checkReservationByCode", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.CheckReservationByCode")
+    @ResponseWrapper(localName = "checkReservationByCodeResponse", targetNamespace = "http://flights.eu.ru/ws", className = "ru.eu.flights.client.generated.CheckReservationByCodeResponse")
+    public Future<?> checkReservationByCodeAsync(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "asyncHandler", targetNamespace = "")
+        AsyncHandler<CheckReservationByCodeResponse> asyncHandler);
 
     /**
      * 

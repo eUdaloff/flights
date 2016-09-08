@@ -14,12 +14,12 @@ import ru.eu.flights.ws.proxy.CustomProxySelector;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.ProxySelector;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -35,17 +35,18 @@ public class FrameMain extends JFrame {
     private JButton btnCheckReservation;
     private JLabel labelCityFromFlag;
     private JLabel labelCityToFlag;
+    private JProgressBar progressBar;
 
     private FlightWSClient flightWSClient = FlightWSClient.getInstance();
     private List<City> cities;
-    private List<Flight> flights;
+    private List<Flight> flights = new ArrayList<>();
 
     public FrameMain() {
         super("Авиабилеты");
 
         ProxySelector.setDefault(new CustomProxySelector());
 
-        tableFlights.setModel(new FlightTableModel(new ArrayList<Flight>()));
+        tableFlights.setModel(new FlightTableModel(flights));
 
         dateFlight.setTimeZone(TimeZone.getTimeZone("GMT"));
         setContentPane(rootPanel);
@@ -53,38 +54,13 @@ public class FrameMain extends JFrame {
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        btSearchFlights.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                btnSearchActionPerformed(e);
-            }
-        });
+        btSearchFlights.addActionListener(e -> btnSearchActionPerformed(e));
+        btnBuyTicket.addActionListener(e -> btnBuyTicketActionPerformed(e));
+        btnCheckReservation.addActionListener(e -> btnCheckReservationActionPerformed());
+        comboBoxFrom.addActionListener(e -> comboBoxFromChanged());
+        comboBoxTo.addActionListener(e -> comboBoxToChanged());
 
-        btnBuyTicket.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                btnBuyTicketActionPerformed(e);
-            }
-        });
-
-        btnCheckReservation.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                btnCheckReservationActionPerformed();
-            }
-        });
-        comboBoxFrom.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                comboBoxFromChanged();
-            }
-        });
-        comboBoxTo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                comboBoxToChanged();
-            }
-        });
+        showOrHideProgressBar(false);
     }
 
     private void comboBoxToChanged() {
@@ -97,7 +73,6 @@ public class FrameMain extends JFrame {
         }
     }
 
-
     private void comboBoxFromChanged() {
         City city = (City) comboBoxFrom.getSelectedItem();
         byte[] flag = city.getCountry().getFlag();
@@ -109,8 +84,7 @@ public class FrameMain extends JFrame {
     }
 
     private void btnCheckReservationActionPerformed() {
-        DialogCheckReservCode dialog = new DialogCheckReservCode(this, true);
-        dialog.pack();
+        DialogCheckReserveCode dialog = new DialogCheckReserveCode(this, true);
         dialog.setVisible(true);
     }
 
@@ -129,7 +103,6 @@ public class FrameMain extends JFrame {
             DialogBuyTicket dialog = new DialogBuyTicket(this, true);
             Flight flight = flights.get(tableFlights.getSelectedRow());
             dialog.setFlight(flight);
-            dialog.pack();
             dialog.setVisible(true);
             searchFlights();
         } else {
@@ -142,29 +115,30 @@ public class FrameMain extends JFrame {
         City to = (City) comboBoxTo.getSelectedItem();
         Date dateDepart = dateFlight.getDate();
         long dateDepartMilliseconds = dateDepart == null ? 0 : dateDepart.getTime();
-        flights = new ArrayList<>();
-        try {
-            flights.addAll(flightWSClient.searchFlights(dateDepartMilliseconds, from, to, 1));
-        } catch (InvalidArgumentMN e) {
-            Logger.getLogger(FrameMain.class.getName()).log(Level.SEVERE, null, e);
-            MessageManager.showErrorMessage(this, "Ошибка", e.getMessage());
-            return;
-        }
-        tableFlights.setModel(new FlightTableModel(flights));
-        ((FlightTableModel) tableFlights.getModel()).fireTableDataChanged();
+        showOrHideProgressBar(true);
+        flightWSClient.searchFlightsAsyncCallback(dateDepartMilliseconds, from, to, 1, res -> {
+            try {
+                flights.clear();
+                flights.addAll(res.get().getReturn());
+            } catch (InterruptedException | ExecutionException e) {
+                Logger.getLogger(FrameMain.class.getName()).log(Level.SEVERE, null, e);
+                MessageManager.showErrorMessage(FrameMain.this, "Ошибка", e.getMessage());
+            } finally {
+                showOrHideProgressBar(false);
+                ((FlightTableModel) tableFlights.getModel()).fireTableDataChanged();
+            }
+        });
     }
-
 
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(new WindowsClassicLookAndFeel());
         } catch (UnsupportedLookAndFeelException ignore) {
         }
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new FrameMain().setVisible(true);
-            }
-        });
+        EventQueue.invokeLater(() -> new FrameMain().setVisible(true));
+    }
+
+    private void showOrHideProgressBar(boolean b) {
+        progressBar.setVisible(b);
     }
 }

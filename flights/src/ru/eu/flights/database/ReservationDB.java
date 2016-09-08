@@ -5,10 +5,7 @@ import ru.eu.flights.database.abstracts.AbstractObjectDB;
 import ru.eu.flights.objects.Reservation;
 import ru.eu.flights.utils.GMTCalendar;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Calendar;
 
 public class ReservationDB extends AbstractObjectDB<Reservation> {
@@ -58,7 +55,9 @@ public class ReservationDB extends AbstractObjectDB<Reservation> {
 
     public PreparedStatement getInsertStmt(Reservation r) throws SQLException {
         Connection conn = AviaDB.getInstance().getConnection();
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO reservation(flight_id, passenger_id, place_id, add_info, reserve_datetime, code) VALUES (?,?,?,?,?,?)");
+        PreparedStatement stmt = conn.prepareStatement(
+                "INSERT INTO reservation(flight_id, passenger_id, place_id, add_info, reserve_datetime, code) VALUES (?,?,?,?,?,?)",
+                Statement.RETURN_GENERATED_KEYS);
         stmt.setLong(1, r.getFlight().getId());
         stmt.setLong(2, r.getPassenger().getId());
         stmt.setLong(3, r.getPlace().getId());

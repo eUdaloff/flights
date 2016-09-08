@@ -35,6 +35,7 @@ public class FlightWS implements FlightSEI {
 
     @Override
     public boolean buyTicket(Passenger passenger, Flight flight, Place place, String addInfo) throws ArgumentException {
+        delay(2000);
         checkObject(flight, Flight.class);
         checkObject(passenger, Passenger.class);
         checkObject(place, Place.class);
@@ -43,6 +44,7 @@ public class FlightWS implements FlightSEI {
 
     @Override
     public Reservation checkReservationByCode(String code) throws ArgumentException {
+        delay(2000);
         if (code == null || code.isEmpty())
             throw new ArgumentException("Code is empty");
 
@@ -50,19 +52,23 @@ public class FlightWS implements FlightSEI {
     }
 
     public Reservation checkReservationByDate(long date) {
+        delay(2000);
         return checkImpl.checkReservationByDate(date);
     }
 
     public Reservation checkReservationByDocNumber(String docNumber) {
+        delay(2000);
         return checkImpl.checkReservationByDocNumber(docNumber);
     }
 
     public Reservation checkReservationByFamilyName(String fn) {
+        delay(2000);
         return checkImpl.checkReservationByFamilyName(fn);
     }
 
     @Override
     public Set<Flight> searchFlights(Long date, City cityFrom, City cityTo, Integer placeCount) throws ArgumentException {
+        delay(2000);
         if (date == null || date <= 0) {
             throw new ArgumentException("Неверная дата отправления");
         }
@@ -95,6 +101,14 @@ public class FlightWS implements FlightSEI {
                     Logger.getLogger(FlightWS.class.getName()).log(Level.SEVERE, null, e);
                 }
             }
+        }
+    }
+
+    private void delay(long ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

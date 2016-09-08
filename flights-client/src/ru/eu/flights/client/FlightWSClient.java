@@ -4,10 +4,12 @@ package ru.eu.flights.client;
 import ru.eu.flights.client.generated.*;
 import ru.eu.flights.object.ExtCity;
 
+import javax.xml.ws.AsyncHandler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.Future;
 
 public class FlightWSClient {
 
@@ -53,11 +55,23 @@ public class FlightWSClient {
         return flights;
     }
 
+    public Future<?> searchFlightsAsyncCallback(long date, City from, City to, int placeCount, AsyncHandler<SearchFlightsResponse> handler) {
+        return port.searchFlightsAsync(date, from, to, placeCount, handler);
+    }
+
     public boolean buyTicket(Flight flight, Place place, Passenger passenger, String addInfo) throws InvalidArgumentMN {
         return port.buyTicket(passenger, flight, place, addInfo);
     }
 
+    public Future<?> buyTicketAsyncCallback(Flight flight, Place place, Passenger passenger, String addInfo, AsyncHandler<BuyTicketResponse> handler) {
+        return port.buyTicketAsync(passenger, flight, place, addInfo, handler);
+    }
+
     public Reservation checkReservationByCode(String code) throws InvalidArgumentMN {
         return port.checkReservationByCode(code);
+    }
+
+    public Future<?> checkReservationByCodeAsyncCallback(String code, AsyncHandler<CheckReservationByCodeResponse> handler) {
+        return port.checkReservationByCodeAsync(code, handler);
     }
 }
